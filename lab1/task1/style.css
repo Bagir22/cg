@@ -1,0 +1,45 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes jump {
+    50% { transform: translateY(-20px); }
+}
+
+.first {
+    animation: jump 0.1s infinite ease-in-out;
+}
+
+.first rect,
+.first ellipse {
+    fill: #3498db;
+}
+
+.first ellipse:nth-child(3) {
+    fill: #FFFFFF;
+}
+
+.first rect:last-child {
+    transform: rotate(45deg);
+}
+
+.second {
+    animation: jump 0.5s infinite ease-in-out;
+}
+
+.second rect {
+    fill: #6cdb34;
+}
+
+.third {
+    animation: jump 2s infinite ease-in-out;
+}
+
+.third rect,
+.third ellipse {
+    fill: #b134db;
+}
+
+
