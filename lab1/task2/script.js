@@ -1,7 +1,7 @@
-function dragAndDrop() {
+function dragAndDrop(id) {
     let startX = 0, startY = 0, currentX = 0, currentY = 0;
 
-    const trolleybus = document.getElementById('trolleybus');
+    const trolleybus = document.getElementById(id);
 
     trolleybus.addEventListener('mousedown', (e) => {
         startX = e.clientX - currentX;
@@ -24,4 +24,5 @@ function dragAndDrop() {
     }
 }
 
-dragAndDrop();
+dragAndDrop('trolleybus1');
+dragAndDrop('trolleybus2');

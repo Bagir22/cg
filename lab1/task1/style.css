@@ -5,11 +5,15 @@ body {
 }
 
 @keyframes jump {
-    50% { transform: translateY(-20px); }
+    0% { transform: translateY(0); }
+    30% { transform: translateY(-80px); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
+    100% { transform: translateY(0); animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
 }
 
+
 .first {
-    animation: jump 0.1s infinite ease-in-out;
+    animation: jump 0.5s infinite alternate;
+    animation-delay: 0s;
 }
 
 .first rect,
@@ -26,7 +30,8 @@ body {
 }
 
 .second {
-    animation: jump 0.5s infinite ease-in-out;
+    animation: jump 1.5s infinite alternate;
+    animation-delay: 0.5s;
 }
 
 .second rect {
@@ -34,7 +39,8 @@ body {
 }
 
 .third {
-    animation: jump 2s infinite ease-in-out;
+    animation: jump 3s infinite alternate;
+    animation-delay: 1s;
 }
 
 .third rect,
