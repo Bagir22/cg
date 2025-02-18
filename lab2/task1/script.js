@@ -16,7 +16,11 @@ function handleFileSelect(event) {
 function updateImage(src) {
     const img = document.getElementById('image');
     img.src = src;
-    img.onload = () => dragAndDrop('image-container');
+    img.onload = function () {
+        const imageContainer = document.getElementById('image-container');
+        imageContainer.style.width = img.width + "px";
+        imageContainer.style.height = img.height + "px";
+    };
 }
 
 function dragAndDrop(id) {
@@ -49,7 +53,8 @@ function dragAndDrop(id) {
 }
 
 window.onload = function (){
-    dragAndDrop('image-container')
     document.getElementById('open-button').addEventListener('click', openFileDialog);
     document.getElementById('file-input').addEventListener('change', handleFileSelect);
+
+    dragAndDrop('image-container')
 }
