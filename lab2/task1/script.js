@@ -17,10 +17,37 @@ function updateImage(src) {
     const img = document.getElementById('image');
     img.src = src;
     img.onload = function () {
-        const imageContainer = document.getElementById('image-container');
-        imageContainer.style.width = img.width + "px";
-        imageContainer.style.height = img.height + "px";
+        resizeImage();
     };
+}
+
+function resizeImage() {
+    const img = document.getElementById("image");
+    const container = document.getElementById("image-container");
+
+
+    const containerWidth = container.clientWidth;
+    const containerHeight = container.clientHeight;
+
+    const imgWidth = img.naturalWidth;
+    const imgHeight = img.naturalHeight;
+
+    const imgDiff = imgWidth / imgHeight;
+    const containerDiff = containerWidth / containerHeight;
+
+    if (imgDiff > containerDiff) {
+        img.style.width = "100%";
+        img.style.height = "auto";
+
+        container.style.width = img.width + "px";
+        container.style.height = (img.width / imgDiff) + "px";
+    } else {
+        img.style.width = "auto";
+        img.style.height = "100%";
+
+        container.style.height = img.height + "px";
+        container.style.width = (img.height * imgDiff) + "px";
+    }
 }
 
 function dragAndDrop(id) {
@@ -55,6 +82,7 @@ function dragAndDrop(id) {
 window.onload = function (){
     document.getElementById('open-button').addEventListener('click', openFileDialog);
     document.getElementById('file-input').addEventListener('change', handleFileSelect);
+    window.addEventListener("resize", resizeImage);
 
     dragAndDrop('image-container')
 }

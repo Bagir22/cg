@@ -37,6 +37,7 @@ function updateImage(src) {
             imageContainer.style.backgroundColor = "white";
         }
 
+        updateCanvasSize()
         clearCanvas();
     };
 }
@@ -133,11 +134,21 @@ function saveImage() {
     link.click();
 }
 
+function updateCanvasSize() {
+    const canvas = document.getElementById("drawing");
+    const imageContainer = document.getElementById("image-container");
+    canvas.width = imageContainer.clientWidth;
+    canvas.height = imageContainer.clientHeight;
+}
+
 window.onload = function () {
     document.getElementById('open-button').addEventListener('click', openFileDialog);
     document.getElementById('file-input').addEventListener('change', handleFileSelect);
     document.getElementById('new-button').addEventListener('click', newButtonClick);
     document.getElementById("save-button").addEventListener("click", saveImage);
+
+    window.addEventListener("resize", updateCanvasSize);
+    updateCanvasSize();
 
     drawing();
 }
