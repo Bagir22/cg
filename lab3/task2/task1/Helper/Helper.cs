@@ -37,7 +37,7 @@ namespace task2
 
         public static void DrawCasteljauBezier(List<Vector2> points, bool fill)
         {
-            int segments = 1;
+            int segments = 50;
 
             if (points.Count < 2) return;
 
@@ -55,26 +55,33 @@ namespace task2
             for (int i = 0; i <= segments; i++)
             {
                 float t = i / (float)segments;
-                Vector2 bezierPoint = GetCasteljauPoint(points, points.Count - 1, 0, t);
-                bezierPoints.Add(bezierPoint);
+
+                List<Vector2> tempPoints = new List<Vector2>(points);
+
+                while (tempPoints.Count > 1)
+                {
+                    List<Vector2> nextTempPoints = new List<Vector2>();
+
+                    for (int j = 0; j < tempPoints.Count - 1; j++)
+                    {
+                        float x = (1 - t) * tempPoints[j].X + t * tempPoints[j + 1].X;
+                        float y = (1 - t) * tempPoints[j].Y + t * tempPoints[j + 1].Y;
+
+                        nextTempPoints.Add(new Vector2(x, y));
+                    }
+
+                    tempPoints = nextTempPoints;
+                }
+
+                bezierPoints.Add(tempPoints[0]);
             }
 
-            foreach (var point in bezierPoints)
+            foreach (var p in bezierPoints)
             {
-                GL.Vertex2(point.X, point.Y);
+                GL.Vertex2(p.X, p.Y);
             }
 
             GL.End();
-        }
-
-        private static Vector2 GetCasteljauPoint(List<Vector2> points, int r, int i, float t)
-        {
-            if (r == 0) return points[i];
-
-            Vector2 p1 = GetCasteljauPoint(points, r - 1, i, t);
-            Vector2 p2 = GetCasteljauPoint(points, r - 1, i + 1, t);
-
-            return new Vector2((1 - t) * p1.X + t * p2.X, (1 - t) * p1.Y + t * p2.Y);
         }
     }
 }

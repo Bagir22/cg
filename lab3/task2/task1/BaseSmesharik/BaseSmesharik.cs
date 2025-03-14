@@ -23,17 +23,15 @@ namespace task2
             this.y = y;
             this.size = size;
             this.bodyColor = bodyColor;
-            this.borderColor = GetDarkerColor(bodyColor, 0.8f);
+            this.borderColor = AdjustColor(bodyColor, 0.8f);
         }
 
-        //Esli koef > 1
-        // Imya 
-        protected static Color4 GetDarkerColor(Color4 color, float darker)
+        private static Color4 AdjustColor(Color4 color, float factor)
         {
             return new Color4(
-                color.R * darker,
-                color.G * darker,
-                color.B * darker,
+                Math.Min(Math.Max(color.R * factor, 0.0f), 1.0f),
+                Math.Min(Math.Max(color.G * factor, 0.0f), 1.0f),
+                Math.Min(Math.Max(color.B * factor, 0.0f), 1.0f),
                 color.A
             );
         }
@@ -45,8 +43,6 @@ namespace task2
         protected abstract void DrawLegs();
         protected abstract void DrawEars();
 
-      
-        //Pattern 
         public void Draw()
         {
             GL.PushMatrix();
