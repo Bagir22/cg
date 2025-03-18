@@ -14,7 +14,6 @@ namespace task2
         private List<BaseSmesharik> smeshariki = new List<BaseSmesharik>();
         private BaseSmesharik _selectedSmesharik = null;
         private bool _isDragging = false;
-        private float _offsetX, _offsetY;
         private Vector2 _offset;
 
         public Window(int width, int height, string title)
@@ -102,20 +101,23 @@ namespace task2
 
         private Vector2 ConvertToWorldCoords(int mouseX, int mouseY)
         {
-            Vector4 vec = new Vector4(
-                (float)mouseX / Width * 2 - 1,
-                1 - (float)mouseY / Height * 2, 
-                0, 1);
+            // https://antongerdelan.net/opengl/raycasting.html
+            float x = (2.0f * mouseX) / Width - 1.0f;
+            float y = 1.0f - (2.0f * mouseY) / Height;
+            Vector3 rayNds = new Vector3(x, y, 1.0f);
 
-            Matrix4 view = GetMatrix(GetPName.ModelviewMatrix);
-            Matrix4 proj = GetMatrix(GetPName.ProjectionMatrix);
+            Vector4 rayClip = new Vector4(rayNds.X, rayNds.Y, -1.0f, 1.0f);
 
-            Matrix4 inv = Matrix4.Invert(view * proj);
+            Matrix4 projectionMatrix = GetMatrix(GetPName.ProjectionMatrix);
+            Matrix4 invProjectionMatrix = Matrix4.Invert(projectionMatrix);
+            Vector4 rayEye = Vector4.Transform(rayClip, invProjectionMatrix);
+            rayEye = new Vector4(rayEye.X, rayEye.Y, -1.0f, 0.0f);
 
-            Vector4 result = Vector4.Transform(vec, inv);
-            result /= result.W;
+            Matrix4 viewMatrix = GetMatrix(GetPName.ModelviewMatrix);
+            Matrix4 invViewMatrix = Matrix4.Invert(viewMatrix);
+            Vector4 rayWorld = Vector4.Transform(rayEye, invViewMatrix);
 
-            return new Vector2(result.X, result.Y);
+            return new Vector2(rayWorld.X, rayWorld.Y);
         }
 
         private Matrix4 GetMatrix(GetPName matrixMode)
